@@ -13,13 +13,18 @@ use Ranjeet\FilamentPanelMenuManager\Resources\MenuResource;
 
 class FilamentPanelMenuManagerPlugin implements Plugin
 {
-
     protected bool $enableMultiTenancy = false;
+
     protected ?string $tenantAttribute = 'company_id';
+
     protected ?string $tenantRelationship = null;
+
     protected bool $autoRegisterNavigation = true;
+
     protected bool $registerInUserMenu = true;
+
     protected ?array $defaultMenuStructure = null;
+
     protected ?\Closure $canAccessCallback = null;
 
     public function getId(): string
@@ -65,42 +70,49 @@ class FilamentPanelMenuManagerPlugin implements Plugin
     public function enableMultiTenancy(bool $enable = true): static
     {
         $this->enableMultiTenancy = $enable;
+
         return $this;
     }
 
     public function tenantAttribute(string $attribute): static
     {
         $this->tenantAttribute = $attribute;
+
         return $this;
     }
 
     public function tenantRelationship(string $relationship): static
     {
         $this->tenantRelationship = $relationship;
+
         return $this;
     }
 
     public function autoRegisterNavigation(bool $register = true): static
     {
         $this->autoRegisterNavigation = $register;
+
         return $this;
     }
 
     public function registerInUserMenu(bool $register = true): static
     {
         $this->registerInUserMenu = $register;
+
         return $this;
     }
 
     public function defaultMenuStructure(array $structure): static
     {
         $this->defaultMenuStructure = $structure;
+
         return $this;
     }
 
     public function canAccess(\Closure $callback): static
     {
         $this->canAccessCallback = $callback;
+
         return $this;
     }
 
@@ -144,7 +156,7 @@ class FilamentPanelMenuManagerPlugin implements Plugin
 
     protected function buildNavigation(NavigationBuilder $builder): NavigationBuilder
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return $builder;
         }
 
@@ -161,7 +173,7 @@ class FilamentPanelMenuManagerPlugin implements Plugin
                     }
                 }
 
-                if (!empty($items)) {
+                if (! empty($items)) {
                     $builder->group(
                         NavigationGroup::make($menu->label)
                             ->items($items)
@@ -182,7 +194,7 @@ class FilamentPanelMenuManagerPlugin implements Plugin
     protected function registerUserMenuItem(): void
     {
         Filament::serving(function () {
-            if (!auth()->check() || !$this->userCanAccess()) {
+            if (! auth()->check() || ! $this->userCanAccess()) {
                 return;
             }
 
@@ -199,7 +211,7 @@ class FilamentPanelMenuManagerPlugin implements Plugin
     protected function getMenusForCurrentTenant()
     {
         $query = Menu::query()->visible()->topLevel()->ordered()
-            ->with(['children' => fn($q) => $q->visible()->ordered()]);
+            ->with(['children' => fn ($q) => $q->visible()->ordered()]);
 
         if ($this->enableMultiTenancy && $this->tenantAttribute) {
             $tenantId = auth()->user()->{$this->tenantAttribute};
@@ -207,14 +219,14 @@ class FilamentPanelMenuManagerPlugin implements Plugin
         }
 
         return $query->get()->filter(function ($menu) {
-            if ($menu->type !== 'group' && !$menu->hasPermission(auth()->user())) {
+            if ($menu->type !== 'group' && ! $menu->hasPermission(auth()->user())) {
                 return false;
             }
 
             if ($menu->children) {
                 $menu->setRelation(
                     'children',
-                    $menu->children->filter(fn($child) => $child->hasPermission(auth()->user()))
+                    $menu->children->filter(fn ($child) => $child->hasPermission(auth()->user()))
                 );
             }
 
@@ -224,7 +236,7 @@ class FilamentPanelMenuManagerPlugin implements Plugin
 
     protected function createNavigationItem($item, $groupLabel = null): ?NavigationItem
     {
-        if (!$item->hasPermission(auth()->user())) {
+        if (! $item->hasPermission(auth()->user())) {
             return null;
         }
 
@@ -233,12 +245,12 @@ class FilamentPanelMenuManagerPlugin implements Plugin
         if ($item->type === 'link') {
             $navItem->url($item->reference)
                 ->openUrlInNewTab($item->open_in_new_tab)
-                ->isActiveWhen(fn(): bool => request()->url() === $item->reference);
+                ->isActiveWhen(fn (): bool => request()->url() === $item->reference);
         } elseif ($item->type === 'route' && $item->reference) {
             $data = json_decode($item->reference, true);
             $url = $data['url'] ?? '#';
             $navItem->url($url)
-                ->isActiveWhen(fn() => request()->url() === $url);
+                ->isActiveWhen(fn () => request()->url() === $url);
         }
 
         if ($item->icon) {

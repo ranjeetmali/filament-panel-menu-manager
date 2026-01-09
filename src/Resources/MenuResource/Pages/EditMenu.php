@@ -38,7 +38,7 @@ class EditMenu extends EditRecord
             $decoded = json_decode($data['reference'], true);
 
             // If it's not valid JSON or doesn't have the expected structure, convert it
-            if (!is_array($decoded) || !isset($decoded['name'])) {
+            if (! is_array($decoded) || ! isset($decoded['name'])) {
                 $routes = collect(filament_routes_with_urls());
                 $route = $routes->firstWhere('name', $data['reference']);
                 if ($route) {
@@ -57,7 +57,7 @@ class EditMenu extends EditRecord
             $decoded = json_decode($this->record->reference, true);
 
             // If it's not valid JSON, convert it
-            if (!is_array($decoded) || !isset($decoded['name'])) {
+            if (! is_array($decoded) || ! isset($decoded['name'])) {
                 $routes = collect(filament_routes_with_urls());
                 $route = $routes->firstWhere('name', $this->record->reference);
                 if ($route) {

@@ -1,7 +1,7 @@
 <?php
+
 namespace Ranjeet\FilamentPanelMenuManager\Helpers;
 
-use Filament\Facades\Filament;
 use Ranjeet\FilamentPanelMenuManager\FilamentPanelMenuManagerPlugin;
 use Ranjeet\FilamentPanelMenuManager\Models\Menu;
 
@@ -35,7 +35,7 @@ class DefaultMenuHelper
         // Add resources (List pages only to avoid duplicates)
         foreach (RouteDiscovery::getResources() as $resource) {
             // Only include index/list pages, skip create pages
-            if (!str_ends_with($resource['name'], ' List')) {
+            if (! str_ends_with($resource['name'], ' List')) {
                 continue;
             }
 
@@ -47,6 +47,7 @@ class DefaultMenuHelper
                 'type' => 'route',
             ];
         }
+
         return $structure;
     }
 
@@ -63,7 +64,7 @@ class DefaultMenuHelper
             $children = $menuData['children'] ?? [];
             unset($menuData['children']);
 
-            if (!empty($children)) {
+            if (! empty($children)) {
                 // Create group
                 $group = Menu::create([
                     $tenantAttribute => $tenantId,

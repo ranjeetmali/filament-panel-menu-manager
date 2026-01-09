@@ -51,7 +51,7 @@ class MenuResource extends Resource
                         ->live()
                         ->default('group')
                         ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('filament-panel-menu-manager::filament-panel-menu-manager.type_helper'))
-                        ->disabled(fn(?Menu $record) => $record !== null)
+                        ->disabled(fn (?Menu $record) => $record !== null)
                         ->columnSpan(1),
 
                     Forms\Components\TextInput::make('label')
@@ -64,7 +64,7 @@ class MenuResource extends Resource
                             'e.g., heroicon-o-home — <a href="https://blade-ui-kit.com/blade-icons#search" target="_blank" rel="noopener">Blade Icons</a>'
                         ))
                         ->maxLength(255)
-                        ->visible(fn(Forms\Get $get) => $get('type') !== 'group')
+                        ->visible(fn (Forms\Get $get) => $get('type') !== 'group')
                         ->columnSpan(1),
 
                     Forms\Components\TextInput::make('sort')
@@ -78,10 +78,10 @@ class MenuResource extends Resource
                     // Route selector
                     Forms\Components\Select::make('reference_route')
                         ->label(__('filament-panel-menu-manager::filament-panel-menu-manager.resource_page'))
-                        ->options(fn() => RouteDiscovery::getRouteOptions())
+                        ->options(fn () => RouteDiscovery::getRouteOptions())
                         ->searchable()
-                        ->required(fn(Forms\Get $get) => $get('type') === 'route')
-                        ->visible(fn(Forms\Get $get) => $get('type') === 'route')
+                        ->required(fn (Forms\Get $get) => $get('type') === 'route')
+                        ->visible(fn (Forms\Get $get) => $get('type') === 'route')
                         ->live()
                         ->afterStateUpdated(function ($state, Forms\Set $set) {
                             $routeData = RouteDiscovery::getRouteData($state);
@@ -100,12 +100,12 @@ class MenuResource extends Resource
                     Forms\Components\TextInput::make('reference_link')
                         ->label(__('filament-panel-menu-manager::filament-panel-menu-manager.url'))
                         ->url()
-                        ->required(fn(Forms\Get $get) => $get('type') === 'link')
-                        ->visible(fn(Forms\Get $get) => $get('type') === 'link')
+                        ->required(fn (Forms\Get $get) => $get('type') === 'link')
+                        ->visible(fn (Forms\Get $get) => $get('type') === 'link')
                         ->live()
-                        ->afterStateUpdated(fn($state, Forms\Set $set) => $set('reference', $state))
-                        ->afterStateHydrated(fn(Forms\Components\TextInput $component, ?Menu $record) =>
-                        $record && $record->type === 'link' ? $component->state($record->reference) : null
+                        ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('reference', $state))
+                        ->afterStateHydrated(
+                            fn (Forms\Components\TextInput $component, ?Menu $record) => $record && $record->type === 'link' ? $component->state($record->reference) : null
                         )
                         ->dehydrated(false)
                         ->columnSpan(2),
@@ -118,7 +118,7 @@ class MenuResource extends Resource
 
                     Forms\Components\Toggle::make('open_in_new_tab')
                         ->label(__('filament-panel-menu-manager::filament-panel-menu-manager.open_new_tab'))
-                        ->visible(fn(Forms\Get $get) => $get('type') === 'link')
+                        ->visible(fn (Forms\Get $get) => $get('type') === 'link')
                         ->inline(false)
                         ->default(false)
                         ->columnSpan(1),
@@ -128,7 +128,7 @@ class MenuResource extends Resource
             // Child items section (for groups)
             Forms\Components\Section::make(__('filament-panel-menu-manager::filament-panel-menu-manager.child_items'))
                 ->description(__('filament-panel-menu-manager::filament-panel-menu-manager.child_items_description'))
-                ->visible(fn(Forms\Get $get) => $get('type') === 'group')
+                ->visible(fn (Forms\Get $get) => $get('type') === 'group')
                 ->schema([
                     Forms\Components\Repeater::make('children')
                         ->relationship()
@@ -157,10 +157,10 @@ class MenuResource extends Resource
 
                                     Forms\Components\Select::make('reference_route')
                                         ->label(__('filament-panel-menu-manager::filament-panel-menu-manager.resource_page'))
-                                        ->options(fn() => RouteDiscovery::getRouteOptions())
+                                        ->options(fn () => RouteDiscovery::getRouteOptions())
                                         ->searchable()
-                                        ->required(fn(Forms\Get $get) => $get('type') === 'route')
-                                        ->visible(fn(Forms\Get $get) => $get('type') === 'route')
+                                        ->required(fn (Forms\Get $get) => $get('type') === 'route')
+                                        ->visible(fn (Forms\Get $get) => $get('type') === 'route')
                                         ->live()
                                         ->afterStateUpdated(function ($state, Forms\Set $set) {
                                             $routeData = RouteDiscovery::getRouteData($state);
@@ -178,12 +178,12 @@ class MenuResource extends Resource
                                     Forms\Components\TextInput::make('reference_link')
                                         ->label(__('filament-panel-menu-manager::filament-panel-menu-manager.url'))
                                         ->url()
-                                        ->required(fn(Forms\Get $get) => $get('type') === 'link')
-                                        ->visible(fn(Forms\Get $get) => $get('type') === 'link')
+                                        ->required(fn (Forms\Get $get) => $get('type') === 'link')
+                                        ->visible(fn (Forms\Get $get) => $get('type') === 'link')
                                         ->live()
-                                        ->afterStateUpdated(fn($state, Forms\Set $set) => $set('reference', $state))
-                                        ->afterStateHydrated(fn(Forms\Components\TextInput $component, ?Menu $record) =>
-                                        $record && $record->type === 'link' ? $component->state($record->reference) : null
+                                        ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('reference', $state))
+                                        ->afterStateHydrated(
+                                            fn (Forms\Components\TextInput $component, ?Menu $record) => $record && $record->type === 'link' ? $component->state($record->reference) : null
                                         )
                                         ->dehydrated(false)
                                         ->columnSpan(2),
@@ -204,7 +204,7 @@ class MenuResource extends Resource
 
                                     Forms\Components\Toggle::make('open_in_new_tab')
                                         ->label(__('filament-panel-menu-manager::filament-panel-menu-manager.open_new_tab'))
-                                        ->visible(fn(Forms\Get $get) => $get('type') === 'link')
+                                        ->visible(fn (Forms\Get $get) => $get('type') === 'link')
                                         ->default(false)
                                         ->inline(false)
                                         ->columnSpan(1),
@@ -216,7 +216,7 @@ class MenuResource extends Resource
                         ->cloneable()
                         ->collapsible()
                         ->collapsed()
-                        ->itemLabel(fn(array $state): ?string => $state['label'] ?? null)
+                        ->itemLabel(fn (array $state): ?string => $state['label'] ?? null)
                         ->addActionLabel(__('filament-panel-menu-manager::filament-panel-menu-manager.add_menu_item'))
                         ->defaultItems(0)
                         ->columnSpanFull(),
@@ -227,7 +227,7 @@ class MenuResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn($query) => $query->topLevel()->ordered())
+            ->modifyQueryUsing(fn ($query) => $query->topLevel()->ordered())
             ->columns([
                 Tables\Columns\TextColumn::make('label')
                     ->searchable()
@@ -235,13 +235,13 @@ class MenuResource extends Resource
 
                 Tables\Columns\TextColumn::make('type')
                     ->badge()
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'group' => 'Group',
                         'route' => 'Route',
                         'link' => 'Link',
                         default => $state,
                     })
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'group' => 'gray',
                         'route' => 'success',
                         'link' => 'info',

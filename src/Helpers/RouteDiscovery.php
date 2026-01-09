@@ -101,7 +101,7 @@ class RouteDiscovery
      */
     protected static function getShieldPermission(string $resourceClass, string $permission): ?string
     {
-        if (!static::isShieldAvailable()) {
+        if (! static::isShieldAvailable()) {
             return null;
         }
 
@@ -121,7 +121,7 @@ class RouteDiscovery
      */
     protected static function getPagePermission(string $pageClass): ?string
     {
-        if (!static::isShieldAvailable()) {
+        if (! static::isShieldAvailable()) {
             return null;
         }
 

@@ -117,9 +117,9 @@ class Menu extends Model
     {
         parent::boot();
 
-        static::created(fn() => static::clearMenuCache());
-        static::updated(fn() => static::clearMenuCache());
-        static::deleted(fn() => static::clearMenuCache());
+        static::created(fn () => static::clearMenuCache());
+        static::updated(fn () => static::clearMenuCache());
+        static::deleted(fn () => static::clearMenuCache());
     }
 
     public static function clearMenuCache(): void
@@ -143,7 +143,7 @@ class Menu extends Model
             $query = static::query()
                 ->visible()
                 ->topLevel()
-                ->with(['children' => fn($q) => $q->visible()->ordered()])
+                ->with(['children' => fn ($q) => $q->visible()->ordered()])
                 ->ordered();
 
             if ($tenantId) {
@@ -152,14 +152,14 @@ class Menu extends Model
             }
 
             return $query->get()->filter(function ($menu) use ($user) {
-                if ($menu->type !== 'group' && !$menu->hasPermission($user)) {
+                if ($menu->type !== 'group' && ! $menu->hasPermission($user)) {
                     return false;
                 }
 
                 if ($menu->children) {
                     $menu->setRelation(
                         'children',
-                        $menu->children->filter(fn($child) => $child->hasPermission($user))
+                        $menu->children->filter(fn ($child) => $child->hasPermission($user))
                     );
                 }
 
@@ -167,5 +167,4 @@ class Menu extends Model
             });
         });
     }
-
 }

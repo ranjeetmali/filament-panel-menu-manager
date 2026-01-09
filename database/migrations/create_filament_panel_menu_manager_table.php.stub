@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create('menus', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->string('type'); // group, route, link
+            $table->string('reference', 5000)->nullable(); // JSON or URL
+            $table->string('label');
+            $table->string('icon')->nullable();
+            $table->integer('sort')->default(0);
+            $table->boolean('is_visible')->default(true);
+            $table->boolean('open_in_new_tab')->default(false);
+
+            // Tenant column - customize based on your needs
+            $table->unsignedBigInteger('company_id')->nullable();
+
+            $table->timestamps();
+
+            // Foreign keys
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('menus')
+                ->onDelete('cascade');
+
+            // Indexes
+            $table->index(['company_id', 'parent_id', 'sort']);
+            $table->index(['company_id', 'is_visible']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('menus');
+    }
+};

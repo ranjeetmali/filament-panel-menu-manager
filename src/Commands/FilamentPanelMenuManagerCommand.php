@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Ranjeet\FilamentPanelMenuManager\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentPanelMenuManagerCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-panel-menu-manager';
 
     public $description = 'My command';
 

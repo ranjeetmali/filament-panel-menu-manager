@@ -17,7 +17,7 @@ if (! function_exists('shield_permission')) {
             ->snake()
             ->replace('_', '::');
 
-        return $permission.'_'.$suffix;
+        return $permission . '_' . $suffix;
     }
 }
 
@@ -31,7 +31,7 @@ if (! function_exists('filament_resources_with_urls')) {
                 $nameLabel = $pageType === 'index' ? 'List' : 'Create';
                 $permission = shield_permission($resource, $pageType === 'index' ? 'view_any' : 'create');
                 $resources[] = [
-                    'name' => ucfirst($resource::getModelLabel()).' '.$nameLabel,
+                    'name' => ucfirst($resource::getModelLabel()) . ' ' . $nameLabel,
                     'class' => $resource,
                     'url' => $resource::getUrl($pageType),
                     'shield_permission' => $permission,
@@ -49,7 +49,7 @@ if (! function_exists('filament_pages_with_urls')) {
     {
         $pages = [];
         $excludePages = [
-            config('filament-panel-menu-manager.exclude_pages')
+            config('filament-panel-menu-manager.exclude_pages'),
         ];
         foreach (\Filament\Facades\Filament::getCurrentPanel()->getPages() as $page) {
             if (in_array($page, $excludePages)) {

@@ -1,4 +1,5 @@
 <?php
+
 // config/filament-menu-manager.php
 
 return [
